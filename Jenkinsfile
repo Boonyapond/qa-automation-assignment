@@ -22,9 +22,11 @@ pipeline {
 
         stage('Run Test Automate') {
             steps {
-                sh 'npm install'
-                sh 'npx playwright install --with-deps'
-                sh 'npx playwright test'
+                withCredentials([string(credentialsId: 'reqres-api-key', variable: 'API_KEY')]) {
+                    sh 'npm install'
+                    sh 'npx playwright install --with-deps'
+                    sh 'npx playwright test'
+                }
             }
         }
 
