@@ -1,27 +1,33 @@
-pipeline {
-    agent any
+stages {
 
-    stages {
-
-        stage('Checkout Code From Git') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/Boonyapond/qa-automation-assignment'
-            }
+    stage('Checkout Code From Git') {
+        steps {
+            git branch: 'main',
+                url: 'https://github.com/Boonyapond/qa-automation-assignment'
         }
+    }
 
-        stage('Run Test Automate') {
-            steps {
-                sh 'npm install'
-                sh 'npx playwright install --with-deps'
-                sh 'npx playwright test'
-            }
+    stage('Check Node Environment') {
+        steps {
+            sh 'echo $PATH'
+            sh 'which node'
+            sh 'node -v'
+            sh 'which npm'
+            sh 'npm -v'
         }
+    }
 
-        stage('Send Result To Jenkins') {
-            steps {
-                junit 'test-results/results.xml'
-            }
+    stage('Run Test Automate') {
+        steps {
+            sh 'npm install'
+            sh 'npx playwright install --with-deps'
+            sh 'npx playwright test'
+        }
+    }
+
+    stage('Send Result To Jenkins') {
+        steps {
+            junit 'test-results/results.xml'
         }
     }
 }
